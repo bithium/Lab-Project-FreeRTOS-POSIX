@@ -31,9 +31,6 @@
  * @brief Internal structs and initializers for FreeRTOS+POSIX.
  */
 
-/* Amazon FreeRTOS includes. */
-#include "iot_doubly_linked_list.h"
-
 /**
  * @brief Mutex attribute object.
  */

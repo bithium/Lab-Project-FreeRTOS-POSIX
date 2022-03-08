@@ -38,6 +38,8 @@
 #include "FreeRTOS_POSIX/mqueue.h"
 #include "FreeRTOS_POSIX/utils.h"
 
+#include "iot_doubly_linked_list.h"
+
 /**
  * @brief Element of the FreeRTOS queues that store mq data.
  */
