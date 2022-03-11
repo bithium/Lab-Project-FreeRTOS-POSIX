@@ -31,6 +31,9 @@
 #ifndef _FREERTOS_POSIX_PORTABLE_DEFAULT_H_
 #define _FREERTOS_POSIX_PORTABLE_DEFAULT_H_
 
+#include "FreeRTOS.h"
+#include "task.h"
+
 /**
  * @name The FreeRTOS task name given to pthreads.
  */

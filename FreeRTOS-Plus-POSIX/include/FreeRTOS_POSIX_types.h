@@ -26,6 +26,9 @@
 #ifndef _FREERTOS_POSIX_INTERNAL_TYPES_H_
 #define _FREERTOS_POSIX_INTERNAL_TYPES_H_
 
+#include "FreeRTOS_POSIX_portable.h"
+#include "FreeRTOS_POSIX_portable_default.h"
+
 #include "FreeRTOS_POSIX_internal.h"
 
 /*

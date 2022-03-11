@@ -46,6 +46,10 @@
 #define TIMESPEC_IS_ZERO( xTimespec )        ( xTimespec.tv_sec == 0 && xTimespec.tv_nsec == 0 ) /**< Check for 0. */
 #define TIMESPEC_IS_NOT_ZERO( xTimespec )    ( !( TIMESPEC_IS_ZERO( xTimespec ) ) )              /**< Check for not 0. */
 
+// If case `configENABLE_BACKWARD_COMPATIBILITY` is enabled this define will
+// cause errors due to the casts done below to remove compilation warnings.
+#undef xTimerHandle
+
 /**
  * @brief Internal timer structure.
  */
@@ -152,7 +156,7 @@ int timer_create( clockid_t clockid,
 
 int timer_delete( timer_t timerid )
 {
-    TimerHandle_t xTimerHandle = timerid;
+    TimerHandle_t xTimerHandle = (TimerHandle_t) timerid;
     timer_internal_t * pxTimer = ( timer_internal_t * ) pvTimerGetTimerID( xTimerHandle );
 
     /* The value of the timer ID, set in timer_create, should not be NULL. */
@@ -193,7 +197,7 @@ int timer_settime( timer_t timerid,
                    struct itimerspec * ovalue )
 {
     int iStatus = 0;
-    TimerHandle_t xTimerHandle = timerid;
+    TimerHandle_t xTimerHandle = (TimerHandle_t) timerid;
     timer_internal_t * pxTimer = ( timer_internal_t * ) pvTimerGetTimerID( xTimerHandle );
     TickType_t xNextTimerExpiration = 0, xTimerExpirationPeriod = 0;
     BaseType_t xTimerCommandSent = pdFAIL;
@@ -302,7 +306,7 @@ int timer_settime( timer_t timerid,
 int timer_gettime( timer_t timerid,
                    struct itimerspec * value )
 {
-    TimerHandle_t xTimerHandle = timerid;
+    TimerHandle_t xTimerHandle = (TimerHandle_t) timerid;
     timer_internal_t * pxTimer = ( timer_internal_t * ) pvTimerGetTimerID( xTimerHandle );
     TickType_t xNextExpirationTime = xTimerGetExpiryTime( xTimerHandle ) - xTaskGetTickCount(),
                xTimerExpirationPeriod = pxTimer->xTimerPeriod;

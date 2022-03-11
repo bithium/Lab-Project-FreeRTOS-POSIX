@@ -38,6 +38,7 @@
 #include "FreeRTOS_POSIX/utils.h"
 
 #include "atomic.h"
+#include "task.h"
 
 /**
  * @brief Initialize a PTHREAD_COND_INITIALIZER cond.
