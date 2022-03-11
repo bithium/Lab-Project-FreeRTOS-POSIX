@@ -97,7 +97,7 @@ static const pthread_attr_internal_t xDefaultThreadAttributes =
 
 /*-----------------------------------------------------------*/
 
-static void prvExitThread( void )
+ __attribute__((__noreturn__)) static void prvExitThread( void )
 {
     pthread_internal_t * pxThread = ( pthread_internal_t * ) pthread_self();
 
@@ -116,6 +116,11 @@ static void prvExitThread( void )
         vPortFree( pxThread );
         vTaskDelete( NULL );
     }
+
+    taskYIELD();
+
+    // This should never be hit.
+    while(1);
 }
 
 /*-----------------------------------------------------------*/
