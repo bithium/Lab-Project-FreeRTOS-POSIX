@@ -30,7 +30,9 @@
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html
  */
 
-#ifndef _FREERTOS_POSIX_FCNTL_H_
+#ifdef _POSIX_THREADS
+#include_next <fcntl.h>
+#elif !defined(_FREERTOS_POSIX_FCNTL_H_)
 #define _FREERTOS_POSIX_FCNTL_H_
 
 #ifdef __cplusplus

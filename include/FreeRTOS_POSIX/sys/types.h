@@ -30,7 +30,9 @@
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html
  */
 
-#ifndef _FREERTOS_POSIX_TYPES_H_
+#ifdef _POSIX_THREADS
+#include_next <sys/types.h>
+#elif !defined(_FREERTOS_POSIX_TYPES_H_)
 #define _FREERTOS_POSIX_TYPES_H_
 
 #ifdef __cplusplus

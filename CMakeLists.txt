@@ -11,6 +11,12 @@ cmake_minimum_required(VERSION 3.16.3)
 project(FreeRTOS-POSIX VERSION 1.1.0)
 
 # =============================================================================
+# Options
+# =============================================================================
+
+option(FREETOS_POSIX_USE_LIBC_PTHREAD "Use internal definitions (default) or libc provided ones." OFF)
+
+# =============================================================================
 # Library
 # =============================================================================
 
@@ -18,16 +24,32 @@ set(PHTREAD_PATH FreeRTOS-Plus-POSIX)
 set(PHTREAD_SRCS_PATH ${PHTREAD_PATH}/source)
 
 file(GLOB PTHREAD_SRCS ${PHTREAD_SRCS_PATH}/*.c)
-add_library(pthread ${PTHREAD_SRCS})
+file(GLOB_RECURSE PTHREAD_HDRS ${PHTREAD_PATH}/**/*.h)
+add_library(pthread ${PTHREAD_SRCS} ${PTHREAD_HDRS})
 target_include_directories(pthread
   PUBLIC
   include
+  include/compat
   ${PHTREAD_PATH}/include
   ${PHTREAD_PATH}/include/portable
   PRIVATE
   include/private
 )
 target_link_libraries(pthread freertos_kernel)
+if (FREETOS_POSIX_USE_LIBC_PTHREAD)
+target_compile_definitions(pthread
+  PUBLIC
+  -D_POSIX_BARRIERS=1
+  -D_POSIX_MONOTONIC_CLOCK=1
+  -D_POSIX_THREADS=1
+  -D_POSIX_TIMERS=1
+  -D_POSIX_PRIORITY_SCHEDULING=1
+  -D_POSIX_TIMEOUTS=1
+  -D_UNIX98_THREAD_MUTEX_ATTRIBUTES
+  -D__BSD_VISIBLE
+  -D__POSIX_VISIBLE=200809
+)
+endif()
 
 # =============================================================================
 # Installation
@@ -42,3 +64,7 @@ install(FILES ${FREERTOS_POSIX_HDRS} DESTINATION include)
 
 file(GLOB FREERTOS_POSIX_PORTABLE_HDRS FreeRTOS-Plus-POSIX/include/portable/*.h)
 install(FILES ${FREERTOS_POSIX_PORTABLE_HDRS} DESTINATION include)
+
+if (FREETOS_POSIX_USE_LIBC_PTHREAD)
+  install(DIRECTORY include/compat/ DESTINATION include)
+endif()

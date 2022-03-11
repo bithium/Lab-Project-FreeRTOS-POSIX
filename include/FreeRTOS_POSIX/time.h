@@ -30,7 +30,25 @@
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html
  */
 
-#ifndef _FREERTOS_POSIX_TIME_H_
+/* FreeRTOS+POSIX includes. */
+#include "FreeRTOS_POSIX/sys/types.h"
+#include "FreeRTOS_POSIX/signal.h"
+
+#ifndef _FREERTOS_POSIX_TIME_UTIL_H_
+#define _FREERTOS_POSIX_TIME_UTIL_H_
+/**
+ * @name Unit conversion constants.
+ */
+/**@{ */
+#define MICROSECONDS_PER_SECOND    ( 1000000LL )                                   /**< Microseconds per second. */
+#define NANOSECONDS_PER_SECOND     ( 1000000000LL )                                /**< Nanoseconds per second. */
+#define NANOSECONDS_PER_TICK       ( NANOSECONDS_PER_SECOND / configTICK_RATE_HZ ) /**< Nanoseconds per FreeRTOS tick. */
+/**@} */
+#endif
+
+#ifdef _POSIX_THREADS
+#include_next <time.h>
+#elif !defined(_FREERTOS_POSIX_TIME_H_)
 #define _FREERTOS_POSIX_TIME_H_
 
 #ifdef __cplusplus
