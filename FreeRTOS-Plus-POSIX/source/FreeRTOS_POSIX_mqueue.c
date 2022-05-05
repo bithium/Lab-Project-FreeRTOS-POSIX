@@ -29,6 +29,7 @@
  */
 
 /* C standard library includes. */
+#include <errno.h>
 #include <string.h>
 
 /* FreeRTOS+POSIX includes. */

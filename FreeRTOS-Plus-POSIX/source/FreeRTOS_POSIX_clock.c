@@ -29,6 +29,7 @@
  */
 
 /* C standard library includes. */
+#include <errno.h>
 #include <stddef.h>
 #include <string.h>
 
