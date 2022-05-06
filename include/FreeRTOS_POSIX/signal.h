@@ -39,7 +39,7 @@
 #elif !defined(_FREERTOS_POSIX_SIGNAL_H_)
 #define _FREERTOS_POSIX_SIGNAL_H_
 
-#include "FreeRTOS_POSIX/pthread.h"
+#include "FreeRTOS_POSIX/sys/types.h"
 
 #ifdef __cplusplus
 extern "C" {
