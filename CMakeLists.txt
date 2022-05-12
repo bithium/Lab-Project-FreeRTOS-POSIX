@@ -36,7 +36,7 @@ target_include_directories(pthread
   include/private
 )
 target_link_libraries(pthread freertos_kernel)
-if (FREETOS_POSIX_USE_LIBC_PTHREAD)
+if (FREERTOS_POSIX_USE_LIBC_PTHREAD)
 target_compile_definitions(pthread
   PUBLIC
   -D_POSIX_BARRIERS=1
@@ -65,6 +65,6 @@ install(FILES ${FREERTOS_POSIX_HDRS} DESTINATION include)
 file(GLOB FREERTOS_POSIX_PORTABLE_HDRS FreeRTOS-Plus-POSIX/include/portable/*.h)
 install(FILES ${FREERTOS_POSIX_PORTABLE_HDRS} DESTINATION include)
 
-if (FREETOS_POSIX_USE_LIBC_PTHREAD)
+if (NOT FREERTOS_POSIX_USE_LIBC_PTHREAD)
   install(DIRECTORY include/compat/ DESTINATION include)
 endif()
