@@ -515,6 +515,47 @@ int pthread_setschedparam( pthread_t thread,
                            int policy,
                            const struct sched_param * param );
 
+
+#if !defined( posixconfigENABLE_PTHREAD_KEY_T ) || ( posixconfigENABLE_PTHREAD_KEY_T == 1 )
+
+/**
+ * @brief Thread-specific data management.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_getspecific.html
+ *
+ * @retval stored value or NULL if no stored value for the given key exists.
+ */
+void *pthread_getspecific (pthread_key_t key);
+
+/**
+ * @brief Thread-specific data management.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_getspecific.html
+ *
+ * @retval 0 - Upon successful completion.
+ */
+int pthread_setspecific (pthread_key_t key, const void *value);
+
+/**
+ * @brief Thread-specific data key creation.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_key_create.html
+ *
+ * @retval 0 - Upon successful completion.
+ */
+int pthread_key_create (pthread_key_t *key, void (*destructor) (void *));
+
+/**
+ * @brief Thread-specific data key deletion.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_key_delete.html
+ *
+ * @retval 0 - Upon successful completion.
+ */
+int pthread_key_delete (pthread_key_t key);
+
+#endif
+
 #ifdef __cplusplus
 }
 #endif

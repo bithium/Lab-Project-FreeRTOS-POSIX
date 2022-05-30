@@ -402,6 +402,10 @@ void pthread_exit( void * value_ptr )
     /* Set the return value. */
     pxThread->xReturn = value_ptr;
 
+    /* Cleanup phread_key_t values */
+    void pthread_key_cleanup(TaskHandle_t handle);
+    pthread_key_cleanup(pxThread->xTaskHandle);
+
     /* Exit this thread. */
     prvExitThread();
 }

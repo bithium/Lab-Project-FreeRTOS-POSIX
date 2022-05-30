@@ -143,6 +143,10 @@
 #ifndef posixconfigENABLE_PTHREAD_BARRIER_T
     #define posixconfigENABLE_PTHREAD_BARRIER_T      1 /**< pthread_barrier_t in sys/types.h */
 #endif
+#ifndef posixconfigENABLE_PTHREAD_KEY_T
+    #define posixconfigENABLE_PTHREAD_KEY_T          1 /**< pthread_key_t in pthread.h */
+#endif
+
 /**@} */
 
 #endif /* ifndef _FREERTOS_POSIX_PORTABLE_DEFAULT_H_ */

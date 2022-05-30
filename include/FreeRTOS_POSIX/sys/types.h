@@ -194,6 +194,15 @@ typedef void                         * pthread_barrierattr_t;
     typedef long int                 off_t;
 #endif
 
+/**
+ * @brief Used to identify a thread key.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_KEY_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_KEY_T ) || ( posixconfigENABLE_PTHREAD_KEY_T == 1 )
+    typedef unsigned int                pthread_key_t;
+#endif
+
 #ifdef __cplusplus
 }
 #endif
