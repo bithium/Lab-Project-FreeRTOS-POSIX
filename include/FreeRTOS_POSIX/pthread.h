@@ -516,8 +516,6 @@ int pthread_setschedparam( pthread_t thread,
                            const struct sched_param * param );
 
 
-#if !defined( posixconfigENABLE_PTHREAD_KEY_T ) || ( posixconfigENABLE_PTHREAD_KEY_T == 1 )
-
 /**
  * @brief Thread-specific data management.
  *
@@ -554,7 +552,62 @@ int pthread_key_create (pthread_key_t *key, void (*destructor) (void *));
  */
 int pthread_key_delete (pthread_key_t key);
 
-#endif
+/**
+ * @brief Initialize a read-write lock object.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_rwlock_init.html
+ *
+ * @retval 0      - Upon successful completion.
+ * @retval EINVAL - If @c rwlock is @c NULL or already initialized.
+ *
+ * @note Currently, the attr parameter is ignored.
+ */
+int pthread_rwlock_init (pthread_rwlock_t *restrict rwlock,
+                         const pthread_rwlockattr_t *restrict attr);
+
+/**
+ * @brief Lock a read-write lock object for reading.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_rwlock_rdlock.html
+ *
+ * @retval 0       - Upon successful completion.
+ * @retval EINVAL  - If @c rwlock is @c NULL or not initialized.
+ * @retval EAGAIN  - The read lock could not be acquired because the maximum number of read locks for rwlock has been exceeded.
+ * @retval EDEADLK - A deadlock condition was detected or the current thread already owns the read-write lock for writing.
+ */
+int pthread_rwlock_rdlock (pthread_rwlock_t *rwlock);
+
+/**
+ * @brief Lock a read-write lock object for writing.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_rwlock_wrlock.html
+ *
+ * @retval 0       - Upon successful completion.
+ * @retval EINVAL  - If @c rwlock is @c NULL or not initialized.
+ * @retval EDEADLK - A deadlock condition was detected or the current thread already owns the read-write lock for writing or reading.
+ */
+int pthread_rwlock_wrlock (pthread_rwlock_t *rwlock);
+
+/**
+ * @brief Lock a read-write lock object for writing.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_rwlock_unlock.html
+ *
+ * @retval 0      - Upon successful completion.
+ * @retval EINVAL - If @c rwlock is @c NULL or not initialized.
+ */
+int pthread_rwlock_unlock (pthread_rwlock_t *rwlock);
+
+/**
+ * @brief Initialize a read-write lock object.
+ *
+ * @see https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_rwlock_destroy.html
+ *
+ * @retval 0      - Upon successful completion.
+ * @retval EINVAL - If @c rwlock is @c NULL or not initialized.
+ * @retval EBUSY  - If lock still in use.
+ */
+int pthread_rwlock_destroy (pthread_rwlock_t *rwlock);
 
 #ifdef __cplusplus
 }

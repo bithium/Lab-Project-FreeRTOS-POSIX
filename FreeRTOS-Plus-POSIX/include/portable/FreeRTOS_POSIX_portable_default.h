@@ -144,7 +144,11 @@
     #define posixconfigENABLE_PTHREAD_BARRIER_T      1 /**< pthread_barrier_t in sys/types.h */
 #endif
 #ifndef posixconfigENABLE_PTHREAD_KEY_T
-    #define posixconfigENABLE_PTHREAD_KEY_T          1 /**< pthread_key_t in pthread.h */
+    #define posixconfigENABLE_PTHREAD_KEY_T          1 /**< pthread_key_t in sys/types.h */
+#endif
+
+#ifndef posixconfigENABLE_PTHREAD_RWLOCK_T
+   #define posixconfigENABLE_PTHREAD_RWLOCK_T        1 /**< pthread_rwlock_t in sys/types.h */
 #endif
 
 /**@} */

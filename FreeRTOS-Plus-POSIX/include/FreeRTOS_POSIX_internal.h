@@ -123,4 +123,27 @@
     } pthread_barrier_internal_t;
 #endif /* if posixconfigENABLE_PTHREAD_BARRIER_T == 1 */
 
+#if posixconfigENABLE_PTHREAD_RWLOCK_T == 1
+
+typedef struct pthread_rwlock_internal
+{
+   BaseType_t xIsInitialized;
+
+   StaticSemaphore_t xReadLock;
+   StaticSemaphore_t xWriteLock;
+
+   uint32_t uReaderCount;
+   TaskHandle_t pOwner;
+} pthread_rwlock_internal_t;
+
+   #define FREERTOS_POSIX_RWLOCK_INITIALIZER \
+      (((pthread_rwlock_internal_t){         \
+          .xIsInitialized = pdFALSE,         \
+          .xReadLock      = {{0}},           \
+          .xWriteLock     = {{0}},           \
+          .uReaderCount   = 0,               \
+          .pOwner         = NULL,            \
+      }))
+#endif
+
 #endif /* _FREERTOS_POSIX_INTERNAL_H_ */

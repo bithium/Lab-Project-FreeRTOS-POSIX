@@ -48,6 +48,7 @@ target_compile_definitions(pthread
   -D_UNIX98_THREAD_MUTEX_ATTRIBUTES
   -D__BSD_VISIBLE
   -D__POSIX_VISIBLE=200809
+  -D_POSIX_READER_WRITER_LOCKS=1
 )
 endif()
 

@@ -203,6 +203,16 @@ typedef void                         * pthread_barrierattr_t;
     typedef unsigned int                pthread_key_t;
 #endif
 
+/**
+ * @brief Used to identify a read/write lock.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_RWLOCK_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_RWLOCK_T ) || ( posixconfigENABLE_PTHREAD_RWLOCK_T == 1 )
+    typedef PthreadRWLockType_t       pthread_rwlock_t;
+    typedef void *                    pthread_rwlockattr_t;
+#endif
+
 #ifdef __cplusplus
 }
 #endif

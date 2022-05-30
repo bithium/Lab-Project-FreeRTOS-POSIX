@@ -81,4 +81,10 @@
     typedef void                       * PthreadBarrierType_t;
 #endif
 
+#if posixconfigENABLE_PTHREAD_RWLOCK_T == 1
+    typedef pthread_rwlock_internal_t  PthreadRWLockType_t;
+#else
+    typedef void                       *  PthreadRWLockType_t;
+#endif
+
 #endif /* _FREERTOS_POSIX_INTERNAL_TYPES_H_ */
