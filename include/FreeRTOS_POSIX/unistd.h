@@ -30,9 +30,7 @@
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/unistd.h.html
  */
 
-#ifdef _POSIX_THREADS
-#include_next <unistd.h>
-#elif !defined(_FREERTOS_POSIX_UNISTD_H_)
+#ifndef _FREERTOS_POSIX_UNISTD_H_
 #define _FREERTOS_POSIX_UNISTD_H_
 
 #ifdef __cplusplus
@@ -40,7 +38,6 @@ extern "C" {
 #endif
 
 #include "FreeRTOS_POSIX/sys/types.h"
-
 
 /**
  * @brief Suspend execution for an interval of time.

@@ -33,16 +33,7 @@
  * function provided by this system.
  */
 
-#ifdef _POSIX_THREADS
-#include_next <errno.h>
-
-#if ( configUSE_POSIX_ERRNO == 1 )
-    extern int FreeRTOS_errno;
-    #undef errno
-    #define errno    FreeRTOS_errno
-#endif
-
-#elif !defined(_FREERTOS_POSIX_ERRNO_H_)
+#ifndef _FREERTOS_POSIX_ERRNO_H_
 #define _FREERTOS_POSIX_ERRNO_H_
 
 #ifdef __cplusplus

@@ -34,9 +34,7 @@
  */
 
 
-#ifdef _POSIX_THREADS
-#include_next <signal.h>
-#elif !defined(_FREERTOS_POSIX_SIGNAL_H_)
+#ifndef _FREERTOS_POSIX_SIGNAL_H_
 #define _FREERTOS_POSIX_SIGNAL_H_
 
 #include "FreeRTOS_POSIX/sys/types.h"

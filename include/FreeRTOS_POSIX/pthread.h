@@ -30,9 +30,7 @@
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html
  */
 
-#ifdef _POSIX_THREADS
-#include_next <pthread.h>
-#elif !defined(_FREERTOS_POSIX_PTHREAD_H_)
+#ifndef _FREERTOS_POSIX_PTHREAD_H_
 #define _FREERTOS_POSIX_PTHREAD_H_
 
 #ifdef __cplusplus

@@ -30,9 +30,7 @@
  * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sched.h.html
  */
 
-#ifdef _POSIX_THREADS
-#include_next <sched.h>
-#elif !defined(_FREERTOS_POSIX_SCHED_H_)
+#ifndef _FREERTOS_POSIX_SCHED_H_
 #define _FREERTOS_POSIX_SCHED_H_
 
 #ifdef __cplusplus
