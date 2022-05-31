@@ -12,6 +12,7 @@ project(FreeRTOS-POSIX VERSION 1.1.0)
 
 include(CheckIncludeFile)
 check_include_file("time.h" HAVE_TIME_H)
+check_include_file("sys/types.h" HAVE_SYS_TYPES_H)
 
 # =============================================================================
 # Library
@@ -34,6 +35,7 @@ target_include_directories(pthread
 target_compile_definitions(pthread
   PUBLIC
   FREERTOS_POSIX_INCLUDE_TIME_H=$<BOOL:${HAVE_TIME_H}>
+  FREERTOS_POSIX_INCLUDE_SYS_TYPES_H=$<BOOL:${HAVE_SYS_TYPES_H}>
 )
 target_link_libraries(pthread freertos_kernel)
 

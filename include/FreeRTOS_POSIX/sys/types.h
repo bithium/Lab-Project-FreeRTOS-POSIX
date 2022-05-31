@@ -50,6 +50,7 @@ extern "C" {
  */
 #if !defined( posixconfigENABLE_CLOCK_T ) || ( posixconfigENABLE_CLOCK_T == 1 )
     typedef uint32_t                 clock_t;
+   #define __clock_t_defined  1
 #endif
 
 /**
@@ -59,6 +60,7 @@ extern "C" {
  */
 #if !defined( posixconfigENABLE_CLOCKID_T ) || ( posixconfigENABLE_CLOCKID_T == 1 )
     typedef int                      clockid_t;
+   #define __clockid_t_defined  1
 #endif
 
 /**
@@ -68,6 +70,7 @@ extern "C" {
  */
 #if !defined( posixconfigENABLE_MODE_T ) || ( posixconfigENABLE_MODE_T == 1 )
     typedef int                      mode_t;
+   #define _MODE_T_DECLARED
 #endif
 
 /**
@@ -77,6 +80,65 @@ extern "C" {
  */
 #if !defined( posixconfigENABLE_PID_T ) || ( posixconfigENABLE_PID_T == 1 )
     typedef int                      pid_t;
+   #define _PID_T_DECLARED
+#endif
+
+/**
+ * @brief Used for a count of bytes or an error indication.
+ *
+ * Enabled/disabled by posixconfigENABLE_SSIZE_T.
+ */
+#if !defined( posixconfigENABLE_SSIZE_T ) || ( posixconfigENABLE_SSIZE_T == 1 )
+    typedef int                      ssize_t;
+   #define _SSIZE_T_DECLARED
+#endif
+
+/**
+ * @brief Used for time in seconds.
+ *
+ * Enabled/disabled by posixconfigENABLE_TIME_T.
+ */
+#if !defined( posixconfigENABLE_TIME_T ) || ( posixconfigENABLE_TIME_T == 1 )
+    typedef int64_t                  time_t;
+   #define _TIME_T_DECLARED
+#endif
+
+/**
+ * @brief Used for timer ID returned by timer_create().
+ *
+ * Enabled/disabled by posixconfigENABLE_TIMER_T.
+ */
+#if !defined( posixconfigENABLE_TIMER_T ) || ( posixconfigENABLE_TIMER_T == 1 )
+    typedef void                     * timer_t;
+   #define _TIMER_T_DECLARED
+#endif
+
+/**
+ * @brief Used for time in microseconds.
+ *
+ * Enabled/disabled by posixconfigENABLE_USECONDS_T.
+ */
+#if !defined( posixconfigENABLE_USECONDS_T ) || ( posixconfigENABLE_USECONDS_T == 1 )
+    typedef unsigned long            useconds_t;
+   #define _USECONDS_T_DECLARED
+#endif
+
+/**
+ * @brief Used for file sizes.
+ *
+ * Enabled/disabled by posixconfigENABLE_OFF_T.
+ */
+#if !defined( posixconfigENABLE_OFF_T ) || ( posixconfigENABLE_OFF_T == 1 )
+    typedef long int                 off_t;
+   #define _OFF_T_DECLARED
+#endif
+
+#if defined(FREERTOS_POSIX_INCLUDE_SYS_TYPES_H) && FREERTOS_POSIX_INCLUDE_SYS_TYPES_H == 1
+#undef _POSIX_THREADS
+#undef __POSIX_VISIBLE
+#define __MISC_VISIBLE 1
+#include_next <sys/types.h>
+#define _POSIX_THREADS 1
 #endif
 
 /**
@@ -145,51 +207,6 @@ typedef void                         * pthread_barrierattr_t;
  */
 #if !defined( posixconfigENABLE_PTHREAD_T ) || ( posixconfigENABLE_PTHREAD_T == 1 )
     typedef void                     * pthread_t;
-#endif
-
-/**
- * @brief Used for a count of bytes or an error indication.
- *
- * Enabled/disabled by posixconfigENABLE_SSIZE_T.
- */
-#if !defined( posixconfigENABLE_SSIZE_T ) || ( posixconfigENABLE_SSIZE_T == 1 )
-    typedef int                      ssize_t;
-#endif
-
-/**
- * @brief Used for time in seconds.
- *
- * Enabled/disabled by posixconfigENABLE_TIME_T.
- */
-#if !defined( posixconfigENABLE_TIME_T ) || ( posixconfigENABLE_TIME_T == 1 )
-    typedef int64_t                  time_t;
-#endif
-
-/**
- * @brief Used for timer ID returned by timer_create().
- *
- * Enabled/disabled by posixconfigENABLE_TIMER_T.
- */
-#if !defined( posixconfigENABLE_TIMER_T ) || ( posixconfigENABLE_TIMER_T == 1 )
-    typedef void                     * timer_t;
-#endif
-
-/**
- * @brief Used for time in microseconds.
- *
- * Enabled/disabled by posixconfigENABLE_USECONDS_T.
- */
-#if !defined( posixconfigENABLE_USECONDS_T ) || ( posixconfigENABLE_USECONDS_T == 1 )
-    typedef unsigned long            useconds_t;
-#endif
-
-/**
- * @brief Used for file sizes.
- *
- * Enabled/disabled by posixconfigENABLE_OFF_T.
- */
-#if !defined( posixconfigENABLE_OFF_T ) || ( posixconfigENABLE_OFF_T == 1 )
-    typedef long int                 off_t;
 #endif
 
 /**
