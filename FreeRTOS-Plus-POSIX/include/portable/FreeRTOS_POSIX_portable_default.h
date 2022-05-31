@@ -132,10 +132,10 @@
     #define posixconfigENABLE_USECONDS_T             1 /**< useconds_t in sys/types.h */
 #endif
 #ifndef posixconfigENABLE_TIMESPEC
-    #define posixconfigENABLE_TIMESPEC               1 /**< struct timespec in time.h */
+    #define posixconfigENABLE_TIMESPEC               !FREERTOS_POSIX_INCLUDE_TIME_H /**< struct timespec in time.h */
 #endif
 #ifndef posixconfigENABLE_ITIMERSPEC
-    #define posixconfigENABLE_ITIMERSPEC             1 /**< struct itimerspec in time.h */
+    #define posixconfigENABLE_ITIMERSPEC             !FREERTOS_POSIX_INCLUDE_TIME_H /**< struct itimerspec in time.h */
 #endif
 #ifndef posixconfigENABLE_SEM_T
     #define posixconfigENABLE_SEM_T                  1 /**< struct sem_t in semaphore.h */

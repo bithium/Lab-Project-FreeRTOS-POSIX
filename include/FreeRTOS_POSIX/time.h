@@ -74,6 +74,10 @@ extern "C" {
 #define TIMER_ABSTIME    0x01
 /**@} */
 
+#if defined(FREERTOS_POSIX_INCLUDE_TIME_H) && FREERTOS_POSIX_INCLUDE_TIME_H == 1
+#include_next <time.h>
+#endif
+
 #if !defined( posixconfigENABLE_TIMESPEC ) || ( posixconfigENABLE_TIMESPEC == 1 )
 
 /**

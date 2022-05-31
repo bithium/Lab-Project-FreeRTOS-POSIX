@@ -10,6 +10,9 @@ cmake_minimum_required(VERSION 3.16.3)
 
 project(FreeRTOS-POSIX VERSION 1.1.0)
 
+include(CheckIncludeFile)
+check_include_file("time.h" HAVE_TIME_H)
+
 # =============================================================================
 # Library
 # =============================================================================
@@ -27,6 +30,10 @@ target_include_directories(pthread
   ${PHTREAD_PATH}/include/portable
   PRIVATE
   include/private
+)
+target_compile_definitions(pthread
+  PUBLIC
+  FREERTOS_POSIX_INCLUDE_TIME_H=$<BOOL:${HAVE_TIME_H}>
 )
 target_link_libraries(pthread freertos_kernel)
 
