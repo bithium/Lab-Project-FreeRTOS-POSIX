@@ -30,23 +30,39 @@ int pthread_rwlock_init (pthread_rwlock_t *restrict rwlock,
                          const pthread_rwlockattr_t *restrict attr)
 {
    (void) attr;
+   int res = 0;
 
    if (rwlock == NULL || rwlock->xIsInitialized == pdTRUE)
       return EINVAL;
 
-   SemaphoreHandle_t handle =
-       xSemaphoreCreateRecursiveMutexStatic (&(rwlock->xReadLock));
-   configASSERT (handle);
+   rwlock->xReadLock = xSemaphoreCreateRecursiveMutex();
+   if(rwlock->xReadLock == NULL) {
+      res = ENOMEM;
+      goto _end;
+   }
 
-   handle = xSemaphoreCreateRecursiveMutexStatic (&(rwlock->xWriteLock));
-   configASSERT (handle);
+   rwlock->xWriteLock = xSemaphoreCreateRecursiveMutex ();
+   if(rwlock->xWriteLock == NULL) {
+      res = ENOMEM;
+      goto _end;
+   }
 
    rwlock->uReaderCount = 0;
    rwlock->pOwner       = NULL;
 
    rwlock->xIsInitialized = pdTRUE;
 
-   return 0;
+_end:
+   if(res) {
+      if(rwlock->xReadLock) {
+         vSemaphoreDelete(rwlock->xReadLock);
+      }
+      if(rwlock->xWriteLock) {
+         vSemaphoreDelete(rwlock->xWriteLock);
+      }
+   }
+
+   return res;
 }
 
 /*-----------------------------------------------------------*/
@@ -64,8 +80,7 @@ int pthread_rwlock_rdlock (pthread_rwlock_t *rwlock)
    }
 
    BaseType_t res = pdFALSE;
-   res            = xSemaphoreTake ((SemaphoreHandle_t) & (rwlock->xReadLock),
-                                    (TickType_t) portMAX_DELAY);
+   res            = xSemaphoreTake (rwlock->xReadLock, (TickType_t) portMAX_DELAY);
    configASSERT (res);
 
    int result = 0;
@@ -79,13 +94,12 @@ int pthread_rwlock_rdlock (pthread_rwlock_t *rwlock)
    rwlock->uReaderCount++;
    if (rwlock->uReaderCount == 1)
    {
-      res = xSemaphoreTake ((SemaphoreHandle_t) & (rwlock->xWriteLock),
-                            portMAX_DELAY);
+      res = xSemaphoreTake (rwlock->xWriteLock, portMAX_DELAY);
       configASSERT (res);
    }
 
 _end:
-   res = xSemaphoreGive ((SemaphoreHandle_t) & (rwlock->xReadLock));
+   res = xSemaphoreGive (rwlock->xReadLock);
    configASSERT (res);
 
    return result;
@@ -105,8 +119,7 @@ int pthread_rwlock_wrlock (pthread_rwlock_t *rwlock)
       return EDEADLK;
    }
 
-   BaseType_t res = xSemaphoreTake ((SemaphoreHandle_t) & (rwlock->xWriteLock),
-                                    portMAX_DELAY);
+   BaseType_t res = xSemaphoreTake (rwlock->xWriteLock, portMAX_DELAY);
    configASSERT (res);
 
    rwlock->pOwner = self;
@@ -121,21 +134,20 @@ int pthread_rwlock_unlock (pthread_rwlock_t *rwlock)
    if (rwlock == NULL || rwlock->xIsInitialized == pdFALSE)
       return EINVAL;
 
-   BaseType_t res = xSemaphoreTake ((SemaphoreHandle_t) & (rwlock->xReadLock),
-                                    portMAX_DELAY);
+   BaseType_t res = xSemaphoreTake (rwlock->xReadLock, portMAX_DELAY);
    configASSERT (res);
 
-   configASSERT (rwlock->uReaderCount >= 1);
+   if(rwlock->uReaderCount >= 1)
+      rwlock->uReaderCount--;
 
-   rwlock->uReaderCount--;
    if (rwlock->uReaderCount == 0)
    {
       rwlock->pOwner = NULL;
-      res = xSemaphoreGive ((SemaphoreHandle_t) & (rwlock->xWriteLock));
+      res = xSemaphoreGive (rwlock->xWriteLock);
       configASSERT (res);
    }
 
-   res = xSemaphoreGive ((SemaphoreHandle_t) & (rwlock->xReadLock));
+   res = xSemaphoreGive (rwlock->xReadLock);
    configASSERT (res);
 
    return 0;
@@ -153,20 +165,18 @@ int pthread_rwlock_destroy (pthread_rwlock_t *rwlock)
       return EBUSY;
    }
 
-   if (xSemaphoreGetMutexHolder ((SemaphoreHandle_t) & (rwlock->xReadLock)) !=
-       NULL)
+   if (xSemaphoreGetMutexHolder (rwlock->xReadLock) != NULL)
    {
       return EBUSY;
    }
 
-   if (xSemaphoreGetMutexHolder ((SemaphoreHandle_t) & (rwlock->xWriteLock)) !=
-       NULL)
+   if (xSemaphoreGetMutexHolder (rwlock->xWriteLock) != NULL)
    {
       return EBUSY;
    }
 
-   vSemaphoreDelete ((SemaphoreHandle_t) & (rwlock->xReadLock));
-   vSemaphoreDelete ((SemaphoreHandle_t) & (rwlock->xWriteLock));
+   vSemaphoreDelete (rwlock->xReadLock);
+   vSemaphoreDelete (rwlock->xWriteLock);
 
    return 0;
 }

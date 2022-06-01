@@ -48,7 +48,7 @@ int sem_destroy( sem_t * sem )
     sem_internal_t * pxSem = ( sem_internal_t * ) ( sem );
 
     /* Free the resources in use by the semaphore. */
-    vSemaphoreDelete( ( SemaphoreHandle_t ) &pxSem->xSemaphore );
+    vSemaphoreDelete( pxSem->xSemaphore );
 
     return 0;
 }
@@ -99,7 +99,7 @@ int sem_init( sem_t * sem,
      */
     if( iStatus == 0 )
     {
-        ( void ) xSemaphoreCreateCountingStatic( SEM_VALUE_MAX, 0, &pxSem->xSemaphore );
+        pxSem->xSemaphore = xSemaphoreCreateCounting( SEM_VALUE_MAX, 0 );
     }
 
     return iStatus;
@@ -119,7 +119,7 @@ int sem_post( sem_t * sem )
     if( iPreviouValue < 0 )
     {
         /* Give the semaphore using the FreeRTOS API. */
-        ( void ) xSemaphoreGive( ( SemaphoreHandle_t ) &pxSem->xSemaphore );
+        ( void ) xSemaphoreGive( pxSem->xSemaphore );
     }
 
     return 0;
@@ -178,8 +178,7 @@ int sem_timedwait( sem_t * sem,
     else
     {
         /* Take the semaphore using the FreeRTOS API. */
-        if( xSemaphoreTake( ( SemaphoreHandle_t ) &pxSem->xSemaphore,
-                            xDelay ) != pdTRUE )
+        if( xSemaphoreTake( pxSem->xSemaphore, xDelay ) != pdTRUE )
         {
             if( iStatus == 0 )
             {
