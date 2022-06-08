@@ -33,16 +33,18 @@
 #include <string.h>
 
 /* FreeRTOS+POSIX includes. */
+#include "FreeRTOSConfig.h"
 #include "FreeRTOS_POSIX.h"
 #include "FreeRTOS_POSIX/errno.h"
 #include "FreeRTOS_POSIX/pthread.h"
+#include "portmacro.h"
 
 /**
  * @brief Thread attribute object.
  */
 typedef struct pthread_attr_internal
 {
-    uint16_t usStackSize;                /**< Stack size. */
+    configSTACK_DEPTH_TYPE usStackSize;                /**< Stack size. */
     uint16_t usSchedPriorityDetachState; /**< Schedule priority 15 bits (LSB) Detach state: 1 bits (MSB) */
 } pthread_attr_internal_t;
 
