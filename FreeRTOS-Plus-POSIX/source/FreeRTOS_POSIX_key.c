@@ -101,7 +101,8 @@ int pthread_key_create (pthread_key_t *key, void (*destructor) (void *))
 
    new_entry->key        = ++s_next_key;
    new_entry->destructor = destructor;
-   new_entry->next = NULL;
+   new_entry->value      = NULL;
+   new_entry->next       = NULL;
 
    new_entry->next = s_keys;
 
@@ -178,6 +179,7 @@ int pthread_setspecific (pthread_key_t key, const void *value)
 
    new_entry->key = key;
    new_entry->value = (void *) value;
+   new_entry->next = NULL;
 
    TaskHandle_t handle = xTaskGetCurrentTaskHandle ();
    entry = (pthread_key_value_t *) pvTaskGetThreadLocalStoragePointer (
