@@ -26,6 +26,7 @@
 #ifndef _FREERTOS_POSIX_INTERNAL_TYPES_H_
 #define _FREERTOS_POSIX_INTERNAL_TYPES_H_
 
+#include "FreeRTOSConfig.h"
 #include "FreeRTOS_POSIX_portable.h"
 #include "FreeRTOS_POSIX_portable_default.h"
 
@@ -69,7 +70,8 @@
 #if posixconfigENABLE_PTHREAD_ATTR_T == 1
     typedef struct pthread_attr
     {
-        uint32_t ulpthreadAttrStorage;
+        configSTACK_DEPTH_TYPE ulpthreadAttrStorage1;
+        uint16_t ulpthreadAttrStorage2;
     } PthreadAttrType_t;
 #else
     typedef void                       * PthreadAttrType_t;
