@@ -40,6 +40,10 @@
 extern "C" {
 #endif
 
+#ifdef FREERTOS_POSIX_HAVE_ERRNO_H
+#include_next <errno.h>
+#endif
+
 /* Undefine all errnos to avoid redefinition errors with system errnos. */
 #undef EPERM
 #undef ENOENT
