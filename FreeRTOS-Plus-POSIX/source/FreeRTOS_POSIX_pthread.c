@@ -347,7 +347,7 @@ int pthread_create( pthread_t * thread,
         /* Create the FreeRTOS task that will run the pthread. */
         if( xTaskCreate( prvRunThread,
                          posixconfigPTHREAD_TASK_NAME,
-                         ( uint16_t ) ( pxThread->xAttr.usStackSize / sizeof( StackType_t ) ),
+                         ( configSTACK_DEPTH_TYPE ) ( pxThread->xAttr.usStackSize / sizeof( configSTACK_DEPTH_TYPE ) ),
                          ( void * ) pxThread,
                          xSchedParam.sched_priority,
                          &pxThread->xTaskHandle ) != pdPASS )
